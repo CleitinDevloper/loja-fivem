@@ -6,7 +6,7 @@ const crypto = require("crypto");
 const { createClient } = require('@supabase/supabase-js');
 const { stat } = require("fs");
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 async function sendMessageToFivem(action, infos, userId, token) {
   try{
@@ -171,5 +171,5 @@ app.post('/api/checkout', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
+  console.log(`Servidor rodando na porta: ${PORT}`);
 });
