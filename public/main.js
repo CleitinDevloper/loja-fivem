@@ -1,5 +1,5 @@
 const products = [
-    { id: 1, name: 'Gemas', desc: "", category: 'gemas', price: 50.0, img: 'https://via.placeholder.com/300x200/000/00aaff?text=VIP+Pack', obs: { enabled: true, max: 2, title: "Selecione até 2 carros", options: ["Carro A", "Carro B", "Carro C", "Carro D"]} },
+    { id: 1, name: 'Gemas', desc: "", category: 'gemas', price: 1.0, img: 'https://via.placeholder.com/300x200/000/00aaff?text=VIP+Pack', obs: { enabled: true, max: 2, title: "Selecione até 2 carros", options: ["Carro A", "Carro B", "Carro C", "Carro D"]} },
 ];
 
 let cart = [];

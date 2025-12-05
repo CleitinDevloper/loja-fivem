@@ -29,7 +29,7 @@ const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const products = {
-    [1]: { id: 1, name: 'Gemas', category: 'gemas', price: 50, img: 'https://via.placeholder.com/300x200/000/00aaff?text=VIP+Pack' },
+    [1]: { id: 1, name: 'Gemas', category: 'gemas', price: 1.0, img: 'https://via.placeholder.com/300x200/000/00aaff?text=VIP+Pack' },
 };
 
 var pedidos = {}
