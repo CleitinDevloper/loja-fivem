@@ -92,6 +92,8 @@ app.post('/api/webhook', async (req, res) => {
     };
 
     if (newStatus != pedidos[data.external_reference].status){
+      pedidos[data.external_reference].status = newStatus
+
       const { error } = await supabase
         .from('pedidos')
         .update({
