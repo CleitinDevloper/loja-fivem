@@ -159,7 +159,7 @@ async function confirmPurchase() {
         closeModal()
 
         document.getElementById("paymentStatus").innerText = `Status: ${data.order_status}`;
-        document.getElementById("paymentCode").innerText = `Codigo do seu Pedido: ${data.order_id}`;
+        document.getElementById("paymentCode").innerText = `${data.order_id}`;
         document.getElementById("paymentModal").style.display = "block";
         document.getElementById("qrcode").src = `data:image/png;base64,${data.base64}`;
         document.getElementById("copiaecola").innerText = data.copiaecola;
@@ -214,6 +214,24 @@ function confirmObs() {
 
     closeObs();
 }
+
+//
+
+document.getElementById("tryFinalizar").addEventListener("click", async function(e) {
+    const res = await fetch('/api/getstatus', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: document.getElementById("paymentCode").innerText })
+    });
+
+    const data = res.json();
+
+    if (data.status){
+        document.getElementById("paymentStatus").innerText = `Status: ${data.status}`;
+    };
+});
 
 window.onclick = function (event) {
     if (event.target == document.getElementById('cartModal')) {

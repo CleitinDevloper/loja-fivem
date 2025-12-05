@@ -64,6 +64,24 @@ async function iniciar(){
 
 iniciar();
 
+app.post('/api/getstatus', async (req, res) => {
+  const { id } = req.body;
+
+  try{
+    const response = await axios.get(
+      `https://api.mercadopago.com/v1/payments/${id}`,
+      {
+        headers: { Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}` }
+      }
+    );
+
+    const data = response.data;
+    return res.json({ status: data.status })
+  } catch(e){
+    console.log(e)
+  }
+})
+
 app.post('/api/webhook', async (req, res) => {
   try{
     const paymentId = req.body.data?.id;
