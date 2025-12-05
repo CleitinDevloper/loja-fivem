@@ -162,7 +162,7 @@ app.post('/api/checkout', async (req, res) => {
       const qrCodeBase64 = data.point_of_interaction?.transaction_data?.qr_code_base64;
       const qrCodeText = data.point_of_interaction?.transaction_data?.qr_code;
 
-      pedidos[orderID] = { token: paymentID, status: "Aguardando Pagamento", price: newPrice, cart: JSON.parse(cart), player_id: id }
+      pedidos[orderID] = { token: paymentID, status: "Aguardando Pagamento", price: newPrice, cart: cart, player_id: id }
 
       return res.json({ status: true, order_id: orderID, order_status: "Aguardando Pagamento", base64: qrCodeBase64, copiaecola: qrCodeText })
     };
