@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://cdn.discordapp.com/icons/1274547802688720988/a_3c162d555106821257184f01cd7c0df1.webp?size=80&quality=lossless" type="image/gif">
+    <title>Onda Brava</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Onda Brava</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Pesquisar itens...">
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="all">Todos</div>
+            <div class="tab" data-tab="gemas">Gemas</div>
+        </div>
+
+        <section class="products" id="productsContainer">
+        </section>
+    </div>
+
+    <div class="cart-icon" id="openCart">
+        🛒
+        <div class="cart-count" id="cartCount">0</div>
+    </div>
+
+    <div id="cartModal" class="cart-modal">
+        <div class="cart-content">
+            <span class="close" id="closeCart">&times;</span>
+            <h2>Carrinho de Compras</h2>
+            <div id="cartItems"></div>
+            <div class="total" id="cartTotal">Total: R$ 0,00</div>
+            <button class="btn" id="checkoutBtn">Finalizar Compra</button>
+        </div>
+    </div>
+
+    <div id="purchaseModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <h2>Confirmar Compra</h2>
+            <p>Itens no carrinho serão entregues após confirmação.</p>
+            <label for="gameId">Digite seu Email:</label>
+            <input type="email" id="email" placeholder="Ex: teste@gmail.com">
+            <label for="gameId">Digite seu ID dentro do jogo:</label>
+            <input type="text" id="gameId" placeholder="Ex: 12345">
+            <p class="warning">⚠️ <strong>Atenção:</strong> Certifique-se de inserir o ID correto do seu personagem dentro do jogo Fivem. Esse ID é único e necessário para entregar os itens no servidor. Se errar, a compra não poderá ser processada.</p>
+            <button class="btn" id="confirmPurchaseBtn">Finalizar Compra</button>
+        </div>
+    </div>
+
+    <div id="loadModal" class="modal">
+        <div class="modal-content">
+            <h1>Gerando Pagamento...</h1>
+        </div>
+    </div>
+
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <h2 id="paymentStatus">Status: Aguardando Pagamento</h2>
+            <p id="paymentCode">Codigo do seu Pedido:</p>
+            <img class="qrcode" id="qrcode" src="">
+            <textarea id="copiaecola" class="text"></textarea>
+            <button class="btn" id="copy">Copiar Codigo</button>
+            <button class="btn" id="tryFinalizar">Pagamento Feito</button>
+        </div>
+    </div>
+
+    <div id="obsModal" class="modal">
+        <div class="modal-content">
+            <h2 id="obsTitle"></h2>
+
+            <div id="obsOptions"></div>
+
+            <button onclick="confirmObs()">Confirmar</button>
+            <button onclick="closeObs()">Cancelar</button>
+        </div>
+    </div>
+
+
+    <script src="main.js"></script>
+</body>
+</html>
