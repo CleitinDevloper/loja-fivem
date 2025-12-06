@@ -102,7 +102,39 @@ app.post('/api/getstatus', async (req, res) => {
   const { id } = req.body;
 
   try{
-    return res.json({ status: pedidos[id].status || "Não Encontrado." })
+
+    const { data: supaData, error } = await supabase
+      .from('pedidos')
+      .select('*')
+      .eq({ id: id })
+
+    if (supaData[0].id_mp){
+      const response = await axios.get(
+        `https://api.mercadopago.com/v1/payments/${supaData[0].id_mp}`,
+        {
+          headers: { Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}` }
+        }
+      );
+
+      const data = response.data;
+      var newStatus = "";
+
+      switch (data.status){
+        case "approved":
+          newStatus = "Pagamento Aprovado.";
+          break;
+        case "pending":
+          newStatus = "Aguardando Pagamento.";
+          break;
+        default:
+          newStatus = "Pagamento Cancelado.";
+          break;
+      };
+
+      return res.json({ status: newStatus || pedidos[id].status })
+    }
+
+    return res.json({ status: false, message: "Erro inesperado." })
   } catch(e){
     console.log(e)
   }
@@ -177,7 +209,7 @@ app.post('/api/checkout', async (req, res) => {
 
     const { data: supaData, error } = await supabase
       .from('pedidos')
-      .insert({ token: paymentID, status: "Aguardando Pagamento", price: newPrice, cart: JSON.stringify(cart), player_id: id })
+      .insert({ token: paymentID, status: "Aguardando Pagamento", price: newPrice, cart: JSON.stringify(cart), player_id: id, id_mp: 0 })
       .select();
 
     const orderID = supaData[0].id;
@@ -205,10 +237,17 @@ app.post('/api/checkout', async (req, res) => {
 
       const data = response.data;
 
+      const id_mp = data.id;
+
       const qrCodeBase64 = data.point_of_interaction?.transaction_data?.qr_code_base64;
       const qrCodeText = data.point_of_interaction?.transaction_data?.qr_code;
 
-      pedidos[orderID] = { token: paymentID, status: "Aguardando Pagamento", price: newPrice, cart: cart, player_id: id }
+      pedidos[orderID] = { token: paymentID, status: "Aguardando Pagamento", price: newPrice, cart: cart, player_id: id, id_mp: id_mp }
+
+      const { data: supaData, error } = await supabase
+        .from('pedidos')
+        .update({ id_mp: id_mp })
+        .eq({ token: paymentID })
 
       return res.json({ status: true, order_id: orderID, order_status: "Aguardando Pagamento", base64: qrCodeBase64, copiaecola: qrCodeText })
     };
