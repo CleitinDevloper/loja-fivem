@@ -53,10 +53,12 @@
             <span class="close" id="closeModal">&times;</span>
             <h2>Confirmar Compra</h2>
             <p>Itens no carrinho serão entregues após confirmação.</p>
-            <label for="gameId">Digite seu Email:</label>
+            <label for="email">Digite seu Email:</label>
             <input type="email" id="email" placeholder="Ex: teste@gmail.com">
             <label for="gameId">Digite seu ID dentro do jogo:</label>
             <input type="text" id="gameId" placeholder="Ex: 12345">
+            <label for="cupom">Cupom de desconto:</label>
+            <input type="text" id="cupom" placeholder="">
             <p class="warning">⚠️ <strong>Atenção:</strong> Certifique-se de inserir o ID correto do seu personagem dentro do jogo Fivem. Esse ID é único e necessário para entregar os itens no servidor. Se errar, a compra não poderá ser processada.</p>
             <button class="btn" id="confirmPurchaseBtn">Finalizar Compra</button>
         </div>
@@ -73,6 +75,7 @@
             <h2 id="paymentStatus">Status: Aguardando Pagamento</h2>
             <p>Codigo do seu Pedido: <p id="paymentCode"></p></p>
             <img class="qrcode" id="qrcode" src="">
+            <p id="newPrice" class="text">0.0</p>
             <textarea id="copiaecola" class="text"></textarea>
             <button class="btn" id="copy">Copiar Codigo</button>
             <button class="btn" id="tryFinalizar">Pagamento Feito</button>

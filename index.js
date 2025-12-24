@@ -8,6 +8,12 @@ const { stat } = require("fs");
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+const cupoms = {
+  "DESCONTO10": 10, // 10% de desconto
+  "DESCONTO20": 20, // 20% de desconto
+  "DESCONTO30": 30  // 30% de desconto
+}
+
 async function sendMessageToFivem(action, infos, userId, token) {
   try{
     const response = await axios.post(
@@ -193,16 +199,28 @@ app.post('/api/checkonline', async (req, res) => {
 })
 
 app.post('/api/checkout', async (req, res) => {
-  const { id, email, cart } = req.body;
+  const { id, email, cart, cupom } = req.body;
 
   try{
     var newPrice = 0
 
-    for (const item of cart){
-      if (products[item.id].price) {
-        newPrice += products[item.id].price;
+    if (cupom && cupoms[cupom]){
+      let discountPercent = cupoms[cupom];
+      let totalWithoutDiscount = 0;
+      for (const item of cart){
+        if (products[item.id].price) {
+          totalWithoutDiscount += products[item.id].price;
+        }
       };
-    };
+      let discountAmount = (totalWithoutDiscount * discountPercent) / 100;
+      newPrice = totalWithoutDiscount - discountAmount;
+    } else {
+      for (const item of cart){
+        if (products[item.id].price) {
+          newPrice += products[item.id].price;
+        };
+      } 
+    }
 
     const paymentID = generateToken(35);
     const idempotencyKey = crypto.randomUUID();
@@ -249,7 +267,7 @@ app.post('/api/checkout', async (req, res) => {
         .update({ id_mp: id_mp })
         .eq({ token: paymentID })
 
-      return res.json({ status: true, order_id: orderID, order_status: "Aguardando Pagamento", base64: qrCodeBase64, copiaecola: qrCodeText })
+      return res.json({ status: true, newPrice: newPrice, desconto: cupoms[cupom] || 0, order_id: orderID, order_status: "Aguardando Pagamento", base64: qrCodeBase64, copiaecola: qrCodeText })
     };
   } catch(e){
     console.log(e)

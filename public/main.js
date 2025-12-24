@@ -166,6 +166,7 @@ async function checkout() {
 async function confirmPurchase() {
     const gameId = document.getElementById('gameId').value;
     const email = document.getElementById('email').value;
+    const cupom = document.getElementById('cupom').value;
 
     if (gameId.trim() === '') {
         alert('Por favor, insira seu ID dentro do jogo.');
@@ -182,13 +183,17 @@ async function confirmPurchase() {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ id: gameId, email: email, cart: cart })
+        body: JSON.stringify({ id: gameId, email: email, cart: cart, cupom: cupom })
     });
 
     const data = await res.json();
 
     if (data.status) {
         closeModal()
+
+        if (data.newPrice){
+            document.getElementById("newPrice").innerText = `R$ ${data.newPrice.toFixed(2)} (${data.desconto}% de desconto aplicado)`;
+        };
 
         document.getElementById("paymentStatus").innerText = `Status: ${data.order_status}`;
         document.getElementById("paymentCode").innerText = `${data.order_id}`;
